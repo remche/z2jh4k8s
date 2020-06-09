@@ -1,0 +1,16 @@
+{{ range .Values.jupyterhub.auth.whitelist.users }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ . }}-admin
+  namespace: {{ . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+- kind: ServiceAccount
+  name: {{ . }}
+  namespace: default
+---
+{{ end }}

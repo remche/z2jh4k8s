@@ -1,0 +1,7 @@
+{{ range .Values.jupyterhub.auth.whitelist.users }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ . }}
+---
+{{ end }}

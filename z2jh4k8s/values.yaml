@@ -1,0 +1,13 @@
+jupyterhub:
+  hub:
+    image: 
+      name: remche/k8s-hub
+      tag: sa-template-0.4
+  singleuser:
+    image:
+      name: remche/jupyterhub-kubectl
+      tag: v1.18.3
+    serviceAccountName: '{username}'
+    extraEnv:
+      TERM: 'xterm'
+    defaultUrl: '/lab'
