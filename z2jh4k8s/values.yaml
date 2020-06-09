@@ -5,7 +5,7 @@ jupyterhub:
       tag: sa-template-0.4
   singleuser:
     image:
-      name: remche/jupyterhub-kubectl
+      name: remche/k8s-notebook
       tag: v1.18.3
     serviceAccountName: '{username}'
     extraEnv:
