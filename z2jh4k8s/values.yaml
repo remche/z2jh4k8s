@@ -1,8 +1,92 @@
 jupyterhub:
   hub:
-    image: 
-      name: remche/k8s-hub
-      tag: sa-template-0.4
+    extraConfig:
+      00-serviceaccount_template_spawner.py: |
+        from tornado import gen
+        from kubespawner import KubeSpawner
+        from kubespawner.objects import make_pod
+        class ServiceAccountSpawner(KubeSpawner):
+          @gen.coroutine
+          def get_pod_manifest(self):
+              """
+              Make a pod manifest that will spawn current user's notebook pod.
+              """
+              if callable(self.uid):
+                  uid = yield gen.maybe_future(self.uid(self))
+              else:
+                  uid = self.uid
+
+              if callable(self.gid):
+                  gid = yield gen.maybe_future(self.gid(self))
+              else:
+                  gid = self.gid
+
+              if callable(self.fs_gid):
+                  fs_gid = yield gen.maybe_future(self.fs_gid(self))
+              else:
+                  fs_gid = self.fs_gid
+
+              if callable(self.supplemental_gids):
+                  supplemental_gids = yield gen.maybe_future(self.supplemental_gids(self))
+              else:
+                  supplemental_gids = self.supplemental_gids
+
+              if self.cmd:
+                  real_cmd = self.cmd + self.get_args()
+              else:
+                  real_cmd = None
+
+              labels = self._build_pod_labels(self._expand_all(self.extra_labels))
+              annotations = self._build_common_annotations(self._expand_all(self.extra_annotations))
+
+              return make_pod(
+                  name=self.pod_name,
+                  cmd=real_cmd,
+                  port=self.port,
+                  image=self.image,
+                  image_pull_policy=self.image_pull_policy,
+                  image_pull_secret=self.image_pull_secrets,
+                  node_selector=self.node_selector,
+                  run_as_uid=uid,
+                  run_as_gid=gid,
+                  fs_gid=fs_gid,
+                  supplemental_gids=supplemental_gids,
+                  run_privileged=self.privileged,
+                  env=self.get_env(),
+                  volumes=self._expand_all(self.volumes),
+                  volume_mounts=self._expand_all(self.volume_mounts),
+                  working_dir=self.working_dir,
+                  labels=labels,
+                  annotations=annotations,
+                  cpu_limit=self.cpu_limit,
+                  cpu_guarantee=self.cpu_guarantee,
+                  mem_limit=self.mem_limit,
+                  mem_guarantee=self.mem_guarantee,
+                  extra_resource_limits=self.extra_resource_limits,
+                  extra_resource_guarantees=self.extra_resource_guarantees,
+                  lifecycle_hooks=self.lifecycle_hooks,
+                  init_containers=self._expand_all(self.init_containers),
+                  service_account=self.service_account.format(
+                      userid=self.user.id,
+                      username=self.user.name,
+                      servername=self.name
+                  ),
+                  extra_container_config=self.extra_container_config,
+                  extra_pod_config=self._expand_all(self.extra_pod_config),
+                  extra_containers=self._expand_all(self.extra_containers),
+                  scheduler_name=self.scheduler_name,
+                  tolerations=self.tolerations,
+                  node_affinity_preferred=self.node_affinity_preferred,
+                  node_affinity_required=self.node_affinity_required,
+                  pod_affinity_preferred=self.pod_affinity_preferred,
+                  pod_affinity_required=self.pod_affinity_required,
+                  pod_anti_affinity_preferred=self.pod_anti_affinity_preferred,
+                  pod_anti_affinity_required=self.pod_anti_affinity_required,
+                  priority_class_name=self.priority_class_name,
+                  logger=self.log,
+              )
+        c.JupyterHub.spawner_class = ServiceAccountSpawner
+
   singleuser:
     image:
       name: remche/k8s-notebook
