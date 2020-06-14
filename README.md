@@ -8,8 +8,8 @@ This chart relies on [Zero to JupyterHub with Kubernetes](https://github.com/jup
 
 The chart : 
 * uses a `singleuser` [custom image](https://github.com/jupyterhub/zero-to-jupyterhub-k8s) image providing k8s tools like `kubectl` ;
-* create a `Namespace`, `ServiceAccount`, and some RBAC rules per user ;
-* spawn the user Jupyter pod with a different service account per user.
+* creates a `Namespace`, `ServiceAccount`, and some RBAC rules per user ;
+* spawns the user Jupyter pod with a different service account per user.
 
 ## Installation
 
@@ -21,4 +21,4 @@ $ helm upgrade --install remche/z2jh4k8s -f config.yaml
 
 ## Configuration
 
-The chart will look `jupyterhub.auth.whitelist.users` values to create the Kubernetes RBAC machinery. You can configure JupyterHub as usual, under 'jupyterhub' value.
+The chart will look `jupyterhub.auth.whitelist.users` values to create the Kubernetes RBAC machinery. You can configure JupyterHub as usual, under 'jupyterhub' value. A dummy configuation is available [here](https://gist.github.com/remche/fe98047c31adbe34d10b41c2bd20d0d0).
