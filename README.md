@@ -1,4 +1,4 @@
-# Zero to JupyterHub with for Kubernetes
+# Zero to JupyterHub for Kubernetes
 
 > :mortar_board: Turn JupyterHub in a Kubernetes learning center
 
