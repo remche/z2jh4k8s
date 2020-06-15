@@ -7,7 +7,7 @@ This chart relies on [Zero to JupyterHub with Kubernetes](https://github.com/jup
 ## Presentation
 
 The chart : 
-* uses a `singleuser` [custom image](https://github.com/jupyterhub/zero-to-jupyterhub-k8s) image providing k8s tools like `kubectl` ;
+* uses a `singleuser` [custom image](https://github.com/remche/k8s-notebook) image providing k8s tools like `kubectl` ;
 * creates a `Namespace`, `ServiceAccount`, and some RBAC rules per user ;
 * spawns the user Jupyter pod with a different service account per user.
 
