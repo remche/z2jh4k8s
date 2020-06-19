@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A helm chart for using z2jh for k8s lessons
 name: z2jh4k8s
-version: 0.0.1
+version: 0.0.2

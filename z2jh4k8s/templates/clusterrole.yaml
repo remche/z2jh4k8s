@@ -11,3 +11,21 @@ rules:
   - get
   - list
   - watch
+---
+{{ if $.Values.rbac.metrics }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: read-metrics
+rules:
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - nodes
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+{{ end }}

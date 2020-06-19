@@ -1,3 +1,5 @@
+rbac:
+  metrics: false
 jupyterhub:
   hub:
     extraConfig:
