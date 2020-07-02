@@ -4,6 +4,8 @@
 
 This chart relies on [Zero to JupyterHub with Kubernetes](https://github.com/jupyterhub/zero-to-jupyterhub-k8s) to deploy a *Kubernetes learning center*.
 
+Genesis of the project is told [here](https://medium.com/@remche/use-jupyterhub-as-a-kubernetes-learning-environment-d9201ca3e933).
+
 ## Presentation
 
 The chart : 
